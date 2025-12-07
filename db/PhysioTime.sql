@@ -23,7 +23,8 @@ CREATE TABLE "services" (
   "description" varchar(10000),
   "expected_time" int NOT NULL,
   "has_image" bool DEFAULT false,
-  "stripe_id" varchar(255)
+  "stripe_id" varchar(255),
+  "is_active" bool DEFAULT true
 );
 
 CREATE TABLE "bookings" (

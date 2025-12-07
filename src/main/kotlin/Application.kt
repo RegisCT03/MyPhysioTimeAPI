@@ -32,3 +32,7 @@ fun Application.module() {
     configSecurity(jwtService)
     configureRouting (jwtService)
 }
+
+suspend fun seedApp(){
+
+}

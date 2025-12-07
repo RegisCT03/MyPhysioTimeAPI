@@ -1,15 +1,20 @@
 package com.example.presentation.di
 
+import com.example.application.cases.ServiceCase
 import com.example.application.cases.UserCase
 import com.example.application.services.PasswordService
 import com.example.application.services.RoleService
+import com.example.application.services.ServiceService
 import com.example.application.services.UserService
 import com.example.domain.interfaces.repositories.IRoleRepository
+import com.example.domain.interfaces.repositories.IServiceRepository
 import com.example.domain.interfaces.repositories.IUserRepository
 import com.example.domain.interfaces.services.IPasswordService
 import com.example.domain.interfaces.services.IRoleService
+import com.example.domain.interfaces.services.IServiceService
 import com.example.domain.interfaces.services.IUserService
 import com.example.infrastructure.repositories.RoleRepository
+import com.example.infrastructure.repositories.ServiceRepository
 import com.example.infrastructure.repositories.UserRepository
 
 class DependenciesDeclaration {
@@ -21,5 +26,9 @@ class DependenciesDeclaration {
         val roleRepository: IRoleRepository = RoleRepository()
         val roleService: IRoleService = RoleService(roleRepository)
         val userCase = UserCase(userService, roleService)
+
+        val serviceRepository : IServiceRepository = ServiceRepository()
+        val serviceService: IServiceService = ServiceService(serviceRepository)
+        val serviceCase: ServiceCase = ServiceCase(serviceService)
     }
 }

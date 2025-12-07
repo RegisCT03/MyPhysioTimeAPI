@@ -18,8 +18,8 @@ fun Route.authRoutes(
         post {
             try {
                 val request = call.receive<UserRegisterRequestDto>()
-                val response = userCase.createUser(request)
-                response.copy(token = jwtService.createJWTToken(UserLoginRequestDto(request.email, request.password)) ?: "")
+                var response = userCase.createUser(request)
+                response =  response.copy(token = jwtService.createJWTToken(UserLoginRequestDto(request.email, request.password)) ?: "")
                 call.respond(HttpStatusCode.Created, response)
             }catch (e: Exception){
                 call.application.environment.log.error("Error en registro", e)

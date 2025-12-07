@@ -10,6 +10,7 @@ object ServiceEntity: Table("services") {
     val expectedTime = integer("expected_time")
     val hasImage = bool("has_image").default(false)
     val stripeId = varchar("stripe_id", 255).nullable()
+    val isActive = bool("is_active").default(true)
 
     override val primaryKey = PrimaryKey(id)
 }
