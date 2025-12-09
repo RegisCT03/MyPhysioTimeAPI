@@ -2,10 +2,13 @@ package com.example.application.cases
 
 import com.example.application.dtos.request.UserRegisterRequestDto
 import com.example.application.dtos.response.UserResponseDto
+import com.example.domain.interfaces.repositories.IUserRepository
 import com.example.domain.interfaces.services.IRoleService
 import com.example.domain.interfaces.services.IUserService
+import com.example.domain.models.ClientStats
 import com.example.domain.models.Role
 import com.example.domain.models.User
+import com.example.infrastructure.repositories.UserRepository
 
 class UserCase(
     private val userService: IUserService,
@@ -29,6 +32,15 @@ class UserCase(
             return mapToUserResponse(it, role)
         } ?: run {
             error("User not found")
+        }
+    }
+
+    suspend fun getAllClients():  Result<List<User>> {
+        return try {
+            val clients = userService.findAllClients()
+            Result.success(clients)
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 

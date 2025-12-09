@@ -38,6 +38,6 @@ class DependenciesDeclaration {
 
         val bookingRepository: IBookingRepository = BookingRepository()
         val bookingService: IBookingService = BookingService(bookingRepository)
-        val bookingCase: BookingCase = BookingCase(bookingService)
+        val bookingCase: BookingCase = BookingCase(bookingService, serviceRepository, userRepository)
     }
 }

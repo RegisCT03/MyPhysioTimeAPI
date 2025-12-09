@@ -9,4 +9,5 @@ interface IBookingService {
     suspend fun getById(id: Int): Booking?
     suspend fun updateStatus(id: Int, status: String): Booking?
     suspend fun getByClientId(clientId: Int): List<Booking>
+    suspend fun create(command: Booking): Booking
 }

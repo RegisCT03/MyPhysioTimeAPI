@@ -10,4 +10,6 @@ interface IServiceService {
     suspend fun updateService(id: Int, serviceRequestDto: ServiceRequestDto): Service?
     suspend fun deleteService(id: Int) : Service?
     suspend fun changeStatus(id: Int) : Service
+    suspend fun getByStatus(status: String) : List<Service>
+    suspend fun findById(id: Int): Service?
 }

@@ -9,4 +9,5 @@ interface IServiceRepository {
     suspend fun updateService(id: Int, service: Service): Service?
     suspend fun deleteService(id: Int): Service?
     suspend fun changeStatus(id: Int): Service
+    suspend fun getByStatus(status: String): List<Service>
 }

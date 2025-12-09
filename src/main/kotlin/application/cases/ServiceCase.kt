@@ -18,6 +18,9 @@ class ServiceCase(
         return services.map { mapToServiceResponse(it) }
     }
 
+    suspend fun getServicesByStatus(status: String):List<ServiceResponseDto> =
+        serviceService.getByStatus(status).map {mapToServiceResponse(it)}
+
     suspend fun getServiceById(id: Int): ServiceResponseDto {
         val services = serviceService.getServiceById(id)
         return mapToServiceResponse(services ?: error("Service not found"))

@@ -50,4 +50,10 @@ class ServiceService(
     override suspend fun changeStatus(id: Int): Service {
         return serviceRepository.changeStatus(id)
     }
+
+    override suspend fun getByStatus(status: String): List<Service> = serviceRepository.getByStatus(status)
+
+    override suspend fun findById(id: Int): Service? {
+        TODO("Not yet implemented")
+    }
 }

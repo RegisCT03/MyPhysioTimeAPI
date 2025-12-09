@@ -57,3 +57,8 @@ ALTER TABLE "bookings" ADD FOREIGN KEY ("physiotherapeut_id") REFERENCES "users"
 ALTER TABLE "payments" ADD FOREIGN KEY ("service_id") REFERENCES "services" ("id");
 
 ALTER TABLE "payments" ADD FOREIGN KEY ("client_id") REFERENCES "users" ("id");
+
+
+INSERT INTO "roles" ("name") VALUES
+                                 ('Administrador'),
+                                 ('Cliente');

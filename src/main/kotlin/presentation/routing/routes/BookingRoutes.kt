@@ -2,14 +2,45 @@ package com.example.presentation.routing.routes
 
 import com.example.application.cases.BookingCase
 import com.example.application.dtos.response.ErrorResponse
+import com.example.domain.models.Booking
 import io.ktor.http.*
 import io.ktor.server.auth.*
+import io.ktor.server.request.receive
 import io.ktor.server.routing.*
 import io.ktor.server.response.*
 
 fun Route.bookingRoutes(bookingCase: BookingCase){
     authenticate {
         route("") {
+            post {
+                try {
+                    val command = call.receive<Booking>()
+                    val result = bookingCase.createBooking(command)
+
+                    result.fold(
+                        onSuccess = { booking ->
+                            call.respond(HttpStatusCode.Created, booking)
+                        },
+                        onFailure = { e ->
+                            call.application.environment.log.error("Error create booking", e)
+                            call.respond(
+                                HttpStatusCode.BadRequest,
+                                ErrorResponse(
+                                    message = e.message ?: "Error creating booking",
+                                    errors = listOf(e.message.toString())
+                                )
+                            )
+                        }
+                    )
+                } catch (e: Exception) {
+                    call.application.environment.log.error("Unexpected error create booking", e)
+                    call.respond(
+                        HttpStatusCode.BadRequest,
+                        ErrorResponse(message = e.message ?: "Unexpected error", errors = listOf(e.message.toString()))
+                    )
+                }
+            }
+
             get("/today-pending") {
                 try {
                     val data = bookingCase.getTodayPending()

@@ -1,12 +1,14 @@
 package com.example.infrastructure.repositories
 
 import com.example.domain.interfaces.repositories.IUserRepository
+import com.example.domain.models.ClientStats
 import com.example.domain.models.User
 import com.example.infrastructure.database.DatabaseFactory
 import com.example.infrastructure.database.entities.UserEntity
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.selectAll
 import java.time.LocalDateTime
 
 class UserRepository : IUserRepository {
@@ -34,6 +36,12 @@ class UserRepository : IUserRepository {
         UserEntity.select { UserEntity.id eq id }
             .map { resultRowToUser(it) }
             .singleOrNull()
+    }
+
+    override suspend fun getAllClients(): List<User> = DatabaseFactory.dbQuery {
+        UserEntity.selectAll().map {
+            resultRowToUser(it)
+        }
     }
 
     private fun resultRowToUser(row: ResultRow)  = User(
