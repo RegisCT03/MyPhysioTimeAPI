@@ -1,3 +1,4 @@
+import org.gradle.jvm.tasks.Jar
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.ktor)
@@ -41,3 +42,6 @@ dependencies {
 
     implementation("org.mindrot:jbcrypt:0.4")
 }
+
+tasks.named<Jar>("shadowJar") {
+    archiveBaseName.set("app")}

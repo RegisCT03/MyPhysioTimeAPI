@@ -4,6 +4,7 @@ import com.example.application.dtos.request.UserRegisterRequestDto
 import com.example.domain.interfaces.repositories.IUserRepository
 import com.example.domain.interfaces.services.IPasswordService
 import com.example.domain.interfaces.services.IUserService
+import com.example.domain.models.ClientStats
 import com.example.domain.models.User
 import java.time.LocalDateTime
 
@@ -31,4 +32,5 @@ class UserService(
     override suspend fun getUserByEmail(email: String): User? = userRepository.getUserByEmail(email)
 
     override suspend fun getUserById(id: Int): User? = userRepository.getUserById(id)
+    override suspend fun findAllClients(): List<User> = userRepository.getAllClients()
 }

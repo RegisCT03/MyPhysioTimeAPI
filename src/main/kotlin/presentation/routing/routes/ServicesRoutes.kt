@@ -36,6 +36,22 @@ fun Route.serviceRoutes(serviceCase: ServiceCase){
                 )
             }
         }
+
+        get("/status/{status}") {
+            try {
+                val status = call.parameters["status"] ?: error("Status required")
+                val services = serviceCase.getServicesByStatus(status)
+                call.respond(HttpStatusCode.OK, services)
+            } catch (e: Exception) {
+                call.application.environment.log.error("Error en la lectura por status", e)
+                call.respond(
+                    HttpStatusCode.BadRequest,
+                    ErrorResponse(message = e.message ?: "Datos invalidos", errors = listOf(e.message.toString()))
+                )
+            }
+        }
+
+
         get("/{id}") {
             try {
                 val id = call.parameters["id"]?.toIntOrNull() ?: error("Invalid ID")

@@ -1,5 +1,6 @@
 package com.example.domain.interfaces.repositories
 
+import com.example.domain.models.ClientStats
 import com.example.domain.models.User
 
 interface IUserRepository {
@@ -10,4 +11,6 @@ interface IUserRepository {
     suspend fun getUserByEmail(email: String): User?
 
     suspend fun getUserById(id: Int) : User?
+
+    suspend fun getAllClients(): List<User>
 }

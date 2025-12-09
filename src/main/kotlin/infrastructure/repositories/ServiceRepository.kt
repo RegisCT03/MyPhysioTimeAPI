@@ -7,7 +7,7 @@ import com.example.infrastructure.database.entities.ServiceEntity
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 
-class ServiceRepository: IServiceRepository {
+class ServiceRepository : IServiceRepository {
     override suspend fun createService(service: Service): Service = DatabaseFactory.dbQuery {
         val serviceSaved = ServiceEntity.insert {
             it[name] = service.name
@@ -25,7 +25,7 @@ class ServiceRepository: IServiceRepository {
         ServiceEntity.selectAll().map { resultRowToService(it) }
     }
 
-    override suspend fun getServiceById(id: Int): Service?  = DatabaseFactory.dbQuery {
+    override suspend fun getServiceById(id: Int): Service? = DatabaseFactory.dbQuery {
         ServiceEntity.select { ServiceEntity.id eq id }
             .map { resultRowToService(it) }
             .singleOrNull()
@@ -33,7 +33,7 @@ class ServiceRepository: IServiceRepository {
 
     override suspend fun updateService(id: Int, service: Service): Service? = DatabaseFactory.dbQuery {
         val bdService = getServiceById(id) ?: return@dbQuery null
-        ServiceEntity.update({ ServiceEntity.id eq bdService.id!! }){
+        ServiceEntity.update({ ServiceEntity.id eq bdService.id!! }) {
             it[name] = service.name
             it[price] = service.price
             it[description] = service.description
@@ -51,10 +51,15 @@ class ServiceRepository: IServiceRepository {
 
     override suspend fun changeStatus(id: Int): Service {
         val bdService = getServiceById(id) ?: throw Exception("Servicio no encontrado")
-        ServiceEntity.update({ ServiceEntity.id eq bdService.id!! }){
+        ServiceEntity.update({ ServiceEntity.id eq bdService.id!! }) {
             it[isActive] = !bdService.isActive!!
-            }
+        }
         return bdService
+    }
+
+    override suspend fun getByStatus(status: String): List<Service> = DatabaseFactory.dbQuery {
+        ServiceEntity.select { ServiceEntity.isActive eq (status == "active") }
+            .map { resultRowToService(it) }
     }
 
     private fun resultRowToService(row: ResultRow): Service {
