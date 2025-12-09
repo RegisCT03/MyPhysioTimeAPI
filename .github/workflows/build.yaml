@@ -1,0 +1,32 @@
+name: Deploy to Develop
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Configurar AWS CLI
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set default.region us-east-1
+
+      - name: Ejecutar script en EC2 con SSM
+        run: |
+          aws ssm send-command \
+            --document-name "AWS-RunShellScript" \
+            --targets '[{"Key":"instanceIds","Values":["i-029ce131c546e1690"]}]' \
+            --parameters 'commands=[
+              "chmod +x /home/ubuntu/MyPhysioTimeAPI/deploy.sh",
+              "bash /home/ubuntu/MyPhysioTimeAPI/deploy.sh"
+            ]' \
+            --region us-east-1 \
+            --output text
