@@ -1,0 +1,11 @@
+POST http://localhost:8000/api/auth/register
+
+Content-Type: application/json
+Accept: application/json
+{
+    "firstName": "daniel",
+    "lastName": "flores",
+    "email": "danielflonat@gmail.com",
+    "phone": "9611969619",
+    "password": "importare"
+}
